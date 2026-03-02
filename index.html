@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Vincent Enderez | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --bg-elevated: #161616;
+            --fg: #f5f5f4;
+            --muted: #a8a29e;
+            --accent: #d97706;
+            --accent-light: #fbbf24;
+            --card: #1c1c1c;
+            --border: #2a2a2a;
+            --gradient-start: #d97706;
+            --gradient-end: #ea580c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Background texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.15) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.1) 0%, transparent 70%);
+            bottom: 20%;
+            left: -100px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--fg);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+            .orb { animation: none; }
+            @keyframes float { 0%, 100% { transform: none; } }
+        }
+
+        /* Hero image */
+        .hero-image-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--border);
+            box-shadow: 0 0 0 8px var(--bg-elevated),
+                        0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s ease;
+        }
+
+        .hero-image-container:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 0 8px var(--bg-elevated),
+                        0 0 30px rgba(217, 119, 6, 0.3),
+                        0 30px 60px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-image-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.1) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image-container:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 32px;
+            padding-bottom: 32px;
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item:last-child {
+            border-left-color: transparent;
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -7px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px var(--bg);
+        }
+
+        /* Skills tabs */
+        .skill-tab {
+            padding: 12px 24px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+        }
+
+        .skill-tab:hover {
+            border-color: var(--accent);
+            color: var(--fg);
+        }
+
+        .skill-tab.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-color: transparent;
+            color: var(--bg);
+        }
+
+        .skill-tab:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .skill-bar-container {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 4px;
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .skill-bar.animate {
+            transform: scaleX(1);
+        }
+
+        /* Project cards */
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.4s ease,
+                        border-color 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px var(--accent);
+            border-color: var(--accent);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--card) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                rgba(217, 119, 6, 0.05) 0%, 
+                transparent 50%,
+                rgba(234, 88, 12, 0.05) 100%);
+        }
+
+        /* Certificate cards */
+        .cert-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cert-card:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        .cert-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Button */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: var(--bg);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(217, 119, 6, 0.5);
+        }
+
+        .btn-primary:focus-visible {
+            outline: 2px solid var(--accent-light);
+            outline-offset: 2px;
+        }
+
+        /* Section heading */
+        .section-heading {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="bg-noise"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0d0d0d]/80 border-b border-[#2a2a2a]">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="font-['Space_Grotesk'] font-bold text-xl" style="color: var(--accent);">JVE</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="nav-link text-sm font-medium">About</a>
+                <a href="#education" class="nav-link text-sm font-medium">Education</a>
+                <a href="#skills" class="nav-link text-sm font-medium">Skills</a>
+                <a href="#projects" class="nav-link text-sm font-medium">Projects</a>
+                <a href="#certificates" class="nav-link text-sm font-medium">Certificates</a>
+            </div>
+            <a href="mailto:enderezjohnvincent@gmail.com" class="btn-primary text-sm py-2 px-4">
+                Contact Me
+            </a>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center pt-20">
+            <div class="max-w-6xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <p class="reveal text-sm font-medium tracking-wider uppercase mb-4" style="color: var(--accent);">Welcome to my portfolio</p>
+                    <h1 class="reveal reveal-delay-1 font-['Space_Grotesk'] text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+                        John Vincent<br>
+                        <span style="color: var(--accent);">Enderez</span>
+                    </h1>
+                    <p class="reveal reveal-delay-2 text-lg mb-8" style="color: var(--muted); max-width: 480px;">
+                        A passionate 2nd year college student at Collegio de San Francisco Javier, 
+                        dedicated to learning and creating meaningful digital experiences.
+                    </p>
+                    <div class="reveal reveal-delay-3 flex flex-wrap gap-4">
+                        <a href="#projects" class="btn-primary">
+                            View Projects
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 border border-[#2a2a2a] rounded-lg text-[#f5f5f4] font-medium hover:border-[#d97706] transition-colors">
+                            Get in Touch
+                        </a>
+                    </div>
+                </div>
+                <div class="reveal reveal-delay-2 order-1 lg:order-2 flex justify-center">
+                    <div class="hero-image-container">
+                        <img src="https://z-cdn-media.chatglm.cn/files/782d1e17-1b06-4d69-b4d4-d255be44a847.png?auth_key=1872102763-1e27d2a0e10b4a768d9c346e99a9ef0e-0-84766f0039e4ebe1c2a418a859fd3344" alt="John Vincent Enderez" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24" style="background: var(--bg-elevated);">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="reveal section-heading font-['Space_Grotesk'] text-3xl md:text-4xl font-bold mb-16">About Me</h2>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="reveal reveal-delay-1">
+                        <p class="text-lg mb-6" style="color: var(--muted);">
+                            I'm a 22-year-old aspiring professional currently in my second year of college at Collegio de San Francisco Javier. 
+                            My journey in education and personal development has shaped my passion for technology and creative problem-solving.
+                        </p>
+                        <p class="text-lg" style="color: var(--muted);">
+                            I believe in continuous learning and pushing boundaries to achieve excellence in everything I do. 
+                            My goal is to leverage my skills and knowledge to make a positive impact in the digital world.
+                        </p>
+                    </div>
+                    <div class="reveal reveal-delay-2 grid grid-cols-2 gap-6">
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <p class="text-3xl font-bold font-['Space_Grotesk'] mb-2" style="color: var(--accent);">22</p>
+                            <p class="text-sm" style="color: var(--muted);">Years Old</p>
+                        </div>
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <p class="text-3xl font-bold font-['Space_Grotesk'] mb-2" style="color: var(--accent);">2nd</p>
+                            <p class="text-sm" style="color: var(--muted);">Year College</p>
+                        </div>
+                        <div class="p-6 rounded-xl col-span-2" style="background: var(--card); border: 1px solid var(--border);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-3" style="color: var(--accent);">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <p class="font-medium mb-1">Nilabo Rizal, Zamboanga del Norte</p>
+                            <p class="text-sm" style="color: var(--muted);">Philippines</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-24">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="reveal section-heading font-['Space_Grotesk'] text-3xl md:text-4xl font-bold mb-16">Educational Attainment</h2>
+                <div class="max-w-2xl">
+                    <div class="timeline-item reveal reveal-delay-1">
+                        <div class="timeline-dot"></div>
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <span class="inline-block px-3 py-1 text-xs font-medium rounded-full mb-3" style="background: rgba(217, 119, 6, 0.15); color: var(--accent);">Present</span>
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">College</h3>
+                            <p class="font-medium mb-2" style="color: var(--accent);">Collegio de San Francisco Javier</p>
+                            <p class="text-sm" style="color: var(--muted);">2nd Year College Student</p>
+                            <p class="text-sm mt-2" style="color: var(--muted);">Currently pursuing higher education with focus on developing technical and professional skills.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item reveal reveal-delay-2">
+                        <div class="timeline-dot" style="background: var(--muted);"></div>
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Senior High School</h3>
+                            <p class="font-medium mb-1" style="color: var(--muted);">Senior High School Graduate</p>
+                            <p class="text-sm" style="color: var(--muted);">Completed secondary education with academic excellence.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item reveal reveal-delay-3">
+                        <div class="timeline-dot" style="background: var(--muted);"></div>
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Junior High School</h3>
+                            <p class="font-medium mb-1" style="color: var(--muted);">Junior High School Graduate</p>
+                            <p class="text-sm" style="color: var(--muted);">Built strong foundational knowledge across various subjects.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item reveal reveal-delay-4">
+                        <div class="timeline-dot" style="background: var(--muted);"></div>
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Elementary</h3>
+                            <p class="font-medium mb-1" style="color: var(--muted);">Elementary Graduate</p>
+                            <p class="text-sm" style="color: var(--muted);">Started educational journey with enthusiasm and curiosity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-24" style="background: var(--bg-elevated);">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="reveal section-heading font-['Space_Grotesk'] text-3xl md:text-4xl font-bold mb-8">Skills</h2>
+                <p class="reveal reveal-delay-1 text-lg mb-12" style="color: var(--muted); max-width: 600px;">
+                    A combination of interpersonal abilities and technical competencies that I've developed through education and personal projects.
+                </p>
+                
+                <!-- Skill Tabs -->
+                <div class="reveal reveal-delay-2 flex flex-wrap gap-4 mb-12">
+                    <button class="skill-tab active" data-tab="soft" aria-pressed="true">Soft Skills</button>
+                    <button class="skill-tab" data-tab="technical" aria-pressed="false">Technical Skills</button>
+                </div>
+
+                <!-- Soft Skills -->
+                <div id="soft-skills" class="skills-content grid md:grid-cols-2 gap-6">
+                    <div class="reveal reveal-delay-1 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Communication</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">90%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-2 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Teamwork</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">85%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-3 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Problem Solving</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">88%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-4 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Time Management</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">82%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 82%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-3 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Adaptability</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">87%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 87%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-4 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Critical Thinking</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">85%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div id="technical-skills" class="skills-content hidden grid md:grid-cols-2 gap-6">
+                    <div class="reveal skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">HTML & CSS</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">85%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-1 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">JavaScript</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">75%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-2 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Microsoft Office</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">90%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-3 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Computer Literacy</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">92%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 92%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-2 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Graphic Design</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">70%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-3 skill-item p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold font-['Space_Grotesk']">Video Editing</h3>
+                            <span class="text-sm font-medium" style="color: var(--accent);">65%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="--width: 65%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="reveal section-heading font-['Space_Grotesk'] text-3xl md:text-4xl font-bold mb-8">Projects</h2>
+                <p class="reveal reveal-delay-1 text-lg mb-12" style="color: var(--muted); max-width: 600px;">
+                    A showcase of academic and personal projects that demonstrate my abilities and dedication to learning.
+                </p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <article class="reveal reveal-delay-1 project-card">
+                        <div class="project-image">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Portfolio Website</h3>
+                            <p class="text-sm mb-4" style="color: var(--muted);">A responsive personal portfolio website showcasing skills, education, and projects using modern web technologies.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">HTML</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">CSS</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">JavaScript</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="reveal reveal-delay-2 project-card">
+                        <div class="project-image">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Document Management System</h3>
+                            <p class="text-sm mb-4" style="color: var(--muted);">A school project focused on organizing and managing digital documents efficiently with categorization features.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">MS Access</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Documentation</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="reveal reveal-delay-3 project-card">
+                        <div class="project-image">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Graphic Design Projects</h3>
+                            <p class="text-sm mb-4" style="color: var(--muted);">Collection of visual designs including posters, banners, and social media graphics created for various purposes.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Canva</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Design</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="reveal reveal-delay-2 project-card">
+                        <div class="project-image">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Database Design Project</h3>
+                            <p class="text-sm mb-4" style="color: var(--muted);">Designed and implemented a relational database system for academic purposes with proper normalization.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">SQL</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Database</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="reveal reveal-delay-3 project-card">
+                        <div class="project-image">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Research Paper</h3>
+                            <p class="text-sm mb-4" style="color: var(--muted);">Academic research paper on emerging technologies and their impact on modern education practices.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Research</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Writing</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="reveal reveal-delay-4 project-card">
+                        <div class="project-image">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                <polyline points="2 17 12 22 22 17"/>
+                                <polyline points="2 12 12 17 22 12"/>
+                            </svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] mb-2">Presentation Design</h3>
+                            <p class="text-sm mb-4" style="color: var(--muted);">Professional presentation templates and slide decks created for academic reports and group projects.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">PowerPoint</span>
+                                <span class="px-3 py-1 text-xs rounded-full" style="background: var(--border); color: var(--muted);">Design</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certificates Section -->
+        <section id="certificates" class="py-24" style="background: var(--bg-elevated);">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="reveal section-heading font-['Space_Grotesk'] text-3xl md:text-4xl font-bold mb-8">Certificates</h2>
+                <p class="reveal reveal-delay-1 text-lg mb-12" style="color: var(--muted); max-width: 600px;">
+                    Recognition and certifications earned through dedication to learning and academic excellence.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="reveal reveal-delay-1 cert-card">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg" style="background: rgba(217, 119, 6, 0.1);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                    <circle cx="12" cy="8" r="7"/>
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold font-['Space_Grotesk'] text-lg mb-1">Academic Excellence Award</h3>
+                                <p class="text-sm mb-2" style="color: var(--muted);">Collegio de San Francisco Javier</p>
+                                <p class="text-xs" style="color: var(--accent);">Recognition for outstanding academic performance</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-2 cert-card">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg" style="background: rgba(217, 119, 6, 0.1);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold font-['Space_Grotesk'] text-lg mb-1">Computer Literacy Certificate</h3>
+                                <p class="text-sm mb-2" style="color: var(--muted);">Technical Education Certification</p>
+                                <p class="text-xs" style="color: var(--accent);">Proficiency in basic computer applications</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-2 cert-card">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg" style="background: rgba(217, 119, 6, 0.1);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold font-['Space_Grotesk'] text-lg mb-1">Leadership Training Certificate</h3>
+                                <p class="text-sm mb-2" style="color: var(--muted);">Student Leadership Program</p>
+                                <p class="text-xs" style="color: var(--accent);">Completed leadership development training</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-3 cert-card">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg" style="background: rgba(217, 119, 6, 0.1);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold font-['Space_Grotesk'] text-lg mb-1">Participant Certificate</h3>
+                                <p class="text-sm mb-2" style="color: var(--muted);">Academic Seminars & Workshops</p>
+                                <p class="text-xs" style="color: var(--accent);">Active participation in educational events</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="reveal max-w-2xl mx-auto text-center">
+                    <h2 class="section-heading font-['Space_Grotesk'] text-3xl md:text-4xl font-bold mb-8 mx-auto">Let's Connect</h2>
+                    <p class="text-lg mb-12" style="color: var(--muted);">
+                        I'm always open to new opportunities, collaborations, or just a friendly conversation. Feel free to reach out.
+                    </p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-6 mb-12">
+                        <a href="mailto:enderezjohnvincent@gmail.com" class="p-6 rounded-xl transition-all hover:border-[#d97706]" style="background: var(--card); border: 1px solid var(--border);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4" style="color: var(--accent);">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <h3 class="font-bold font-['Space_Grotesk'] mb-2">Email</h3>
+                            <p class="text-sm" style="color: var(--muted);">enderezjohnvincent@gmail.com</p>
+                        </a>
+                        
+                        <div class="p-6 rounded-xl" style="background: var(--card); border: 1px solid var(--border);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4" style="color: var(--accent);">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <h3 class="font-bold font-['Space_Grotesk'] mb-2">Location</h3>
+                            <p class="text-sm" style="color: var(--muted);">Nilabo Rizal, Zamboanga del Norte, Philippines</p>
+                        </div>
+                    </div>
+                    
+                    <a href="mailto:enderezjohnvincent@gmail.com" class="btn-primary inline-flex">
+                        Send me an Email
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t" style="border-color: var(--border);">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-sm" style="color: var(--muted);">
+                2024 John Vincent Enderez. Crafted with passion and dedication.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize all elements first
+        const skillTabs = document.querySelectorAll('.skill-tab');
+        const skillBars = document.querySelectorAll('.skill-bar');
+        const revealElements = document.querySelectorAll('.reveal');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Skill tabs functionality
+        skillTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active states
+                skillTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-pressed', 'false');
+                });
+                tab.classList.add('active');
+                tab.setAttribute('aria-pressed', 'true');
+
+                // Show/hide content
+                const targetTab = tab.dataset.tab;
+                document.querySelectorAll('.skills-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                const targetContent = document.getElementById(targetTab + '-skills');
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                    
+                    // Animate skill bars in the newly visible content
+                    const newBars = targetContent.querySelectorAll('.skill-bar');
+                    newBars.forEach((bar, index) => {
+                        bar.classList.remove('animate');
+                        if (!prefersReducedMotion) {
+                            setTimeout(() => {
+                                const width = bar.style.getPropertyValue('--width') || '80%';
+                                bar.style.transform = 'scaleX(' + (parseFloat(width) / 100) + ')';
+                            }, index * 100);
+                        } else {
+                            const width = bar.style.getPropertyValue('--width') || '80%';
+                            bar.style.transform = 'scaleX(' + (parseFloat(width) / 100) + ')';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate skill bars when they come into view
+                    if (entry.target.classList.contains('skill-item')) {
+                        const bar = entry.target.querySelector('.skill-bar');
+                        if (bar) {
+                            if (!prefersReducedMotion) {
+                                setTimeout(() => {
+                                    const width = bar.style.getPropertyValue('--width') || '80%';
+                                    bar.style.transform = 'scaleX(' + (parseFloat(width) / 100) + ')';
+                                }, 200);
+                            } else {
+                                const width = bar.style.getPropertyValue('--width') || '80%';
+                                bar.style.transform = 'scaleX(' + (parseFloat(width) / 100) + ')';
+                            }
+                        }
+                    }
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize first tab's skill bars on page load
+        window.addEventListener('load', () => {
+            const initialContent = document.getElementById('soft-skills');
+            if (initialContent) {
+                const initialBars = initialContent.querySelectorAll('.skill-bar');
+                initialBars.forEach((bar, index) => {
+                    if (!prefersReducedMotion) {
+                        setTimeout(() => {
+                            const width = bar.style.getPropertyValue('--width') || '80%';
+                            bar.style.transform = 'scaleX(' + (parseFloat(width) / 100) + ')';
+                        }, 500 + index * 100);
+                    } else {
+                        const width = bar.style.getPropertyValue('--width') || '80%';
+                        bar.style.transform = 'scaleX(' + (parseFloat(width) / 100) + ')';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
